@@ -1,0 +1,80 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Pedido {
+  createdAt    DateTime                @default(now())
+  dataPedido   DateTime?
+  id           String                  @id @default(cuid())
+  produto      Produto?                @relation(fields: [produtoId], references: [id])
+  produtoId    String?
+  statusPedido EnumPedidoStatusPedido?
+  tipoPedido   EnumPedidoTipoPedido?
+  updatedAt    DateTime                @updatedAt
+}
+
+model Produto {
+  codigoProduto        String?
+  createdAt            DateTime @default(now())
+  id                   String   @id @default(cuid())
+  localizacao          String?
+  nomeProduto          String?
+  pedidos              Pedido[]
+  quantidadeDisponivel Int?
+  updatedAt            DateTime @updatedAt
+}
+
+model Motorista {
+  createdAt      DateTime @default(now())
+  id             String   @id @default(cuid())
+  nomeMotorista  String?
+  numeroRegistro String?
+  updatedAt      DateTime @updatedAt
+  veiculo        String?
+}
+
+model Evento {
+  createdAt       DateTime  @default(now())
+  dataEvento      DateTime?
+  descricaoEvento String?
+  id              String    @id @default(cuid())
+  localEvento     String?
+  tituloEvento    String?
+  updatedAt       DateTime  @updatedAt
+}
+
+model Atividade {
+  createdAt          DateTime                      @default(now())
+  dataInicio         DateTime?
+  dataTermino        DateTime?
+  descricaoAtividade String?
+  id                 String                        @id @default(cuid())
+  statusAtividade    EnumAtividadeStatusAtividade?
+  updatedAt          DateTime                      @updatedAt
+}
+
+model Incidente {
+  createdAt          DateTime  @default(now())
+  dataOcorrencia     DateTime?
+  descricaoIncidente String?
+  fotoIncidente      Json?
+  id                 String    @id @default(cuid())
+  updatedAt          DateTime  @updatedAt
+}
+
+enum EnumPedidoStatusPedido {
+  Option1
+}
+
+enum EnumPedidoTipoPedido {
+  Option1
+}
+
+enum EnumAtividadeStatusAtividade {
+  Option1
+}
